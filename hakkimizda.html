@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Villa Kiralama | Hakkımızda</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .about-content {
+      line-height: 1.8;
+      color: var(--color-text);
+    }
+    .about-content h2 {
+      color: var(--color-primary);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    .about-content h3 {
+      color: var(--color-primary);
+      margin-top: 1.5rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.2rem;
+    }
+    .about-content p {
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+    .about-content ul {
+      margin: 1rem 0;
+      padding-left: 2rem;
+    }
+    .about-content li {
+      margin-bottom: 0.5rem;
+    }
+    .certificates-section {
+      margin-top: 3rem;
+      padding: 2rem;
+      background: var(--color-bg-secondary);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    .certificates-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center; /* Son satırdaki elemanları ortalar */      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    .certificate-item {
+      flex: 0 1 250px; /* minimum 250px olacak, gerekirse küçülür */
+      max-width: 300px; 
+      text-align: center;
+      padding: 1.5rem;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .certificate-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+    .certificate-image {
+      margin-bottom: 1rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .certificate-image img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .certificate-item:hover .certificate-image img {
+      transform: scale(1.05);
+    }
+    .certificate-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--color-text);
+    }
+    .certificate-desc {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .stats-section {
+      margin: 3rem 0;
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      border-radius: var(--radius);
+      color: white;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    @media (max-width: 768px) {
+      .certificates-grid {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 600px;
+      position: relative;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      position: absolute;
+      right: 1rem;
+      top: 0.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: var(--color-primary);
+    }
+
+    .modal-content img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .modal-content h3 {
+      color: var(--color-primary);
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Certificate item cursor pointer */
+    .certificate-item {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="index.html" class="logo"><span class="logo-badge"></span>Villa Kiralama</a>
+      <button class="menu-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" aria-label="Ana menü">
+        <a href="index.html">Anasayfa</a>
+        <a href="villas.html">Villalar</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+      <a href="rezervasyon.html" class="btn nav-cta">Rezervasyon</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h1 class="section-title">Hakkımızda</h1>
+      
+      <div class="form-card">
+        <div class="about-content">
+          <p><strong>Hayallerinizdeki tatili gerçeğe dönüştürmek için buradayız…
+            Bizimle tatil yalnızca birkaç gün değil, unutulmaz bir deneyimdir.</strong></p>
+          
+          <p>2014 yılında turizm sektöründe ilk adımlarımızı attık. Kısa sürede müşteri memnuniyetini ön planda tutan yaklaşımımız sayesinde büyüdük ve 2021 yılında hizmetlerimizi daha profesyonel bir yapıya taşıyarak TURANVİLLA TURİZM VE TİCARET LTD. ŞTİ. çatısı altında faaliyet göstermeye başladık. Bugün, Türkiye Seyahat Acentaları Birliği (TÜRSAB) üyesi, 16777 belge numaralı A grubu seyahat acentası olmanın gururunu yaşıyoruz.</p>
+
+          <h2>Misyonumuz ve Vizyonumuz</h2>
+          
+          <p>Misyonumuz; özenle seçilmiş villa ve apartlarımızda siz değerli misafirlerimize konfor, güven ve huzur içinde bir tatil deneyimi sunmaktır.
+            Yoğun iş temposunun ardından aileleriyle kaliteli vakit geçirmek isteyen misafirlerimizin beklentilerini eksiksiz karşılamak ve tatillerini keyifli bir anıya dönüştürmek için çalışıyoruz.
+            
+            Bizim için güven ve memnuniyet en büyük değerlerdir. Başarımızı; kaliteye bağlılığımıza, şeffaflığa, dürüstlüğe ve yıllardır bizi tercih eden misafirlerimizin sadakatine borçluyuz.</p>
+          
+          <p>Vizyonumuz; villa tatili denildiğinde akla gelen ilk adres olmak, yerli ve yabancı misafirlerimizi kendi evlerindeymiş gibi rahat ettirmek ve ülkemizin eşsiz güzelliklerini en iyi şekilde tanıtmaktır.
+            Biz, tatili bir lüks değil; herkesin ihtiyacı olan bir yaşam molası olarak görüyoruz. Amacımız, bu molaları en güzel anılarla doldurmak ve her tatili bir sonrakinin habercisi haline getirmektir.</p>
+          
+
+          <h2>Neden Biz?</h2>
+          <ul>
+            <li><strong>Deneyim:</strong> 10+ yıllık sektör tecrübesi</li>
+            <li><strong>Güven:</strong> A grubu seyahat acentası belgesi</li>
+            <li><strong>Kalite:</strong> Özenle seçilmiş villa portföyü</li>
+            <li><strong>Hizmet:</strong> 7/24 müşteri desteği</li>
+            <li><strong>Memnuniyet:</strong> %98 müşteri memnuniyet oranı</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- İstatistikler Bölümü -->
+      <div class="stats-section" style="background: linear-gradient(135deg, #c4e0e8, #a3d9d5); box-shadow: 0 5px 15px rgba(164, 218, 213, 0.15); padding: 2.5rem 2rem; position: relative; overflow: hidden;">
+        <!-- Dalga efekti için dekoratif elementler -->
+        <div style="position: absolute; bottom: -10px; left: 0; width: 100%; height: 15px; background: url('data:image/svg+xml;utf8,<svg viewBox=\'0 0 1200 120\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z\' fill=\'%23ffffff\' fill-opacity=\'0.15\'></path></svg>') no-repeat; background-size: cover;"></div>
+        <div style="position: absolute; top: -10px; left: 0; width: 100%; height: 15px; background: url('data:image/svg+xml;utf8,<svg viewBox=\'0 0 1200 120\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z\' fill=\'%23ffffff\' fill-opacity=\'0.1\'></path></svg>') no-repeat; background-size: cover; transform: rotate(180deg);"></div>
+        <h2 style="color: #4a6b75; text-align: center; margin-bottom: 1.5rem; font-size: 1.8rem; text-shadow: 1px 1px 2px rgba(255,255,255,0.5);">🌴 Rakamlarla Biz 🌊</h2>
+        <div class="stats-grid">
+          <div class="stat-item" style="background: rgba(255,255,255,0.25); padding: 1.2rem; border-radius: var(--radius); backdrop-filter: blur(5px);">
+            <i class="fas fa-calendar-alt" style="font-size: 1.6rem; color: #4a6b75; margin-bottom: 0.8rem;"></i>
+            <div class="stat-number" style="font-size: 2.2rem; font-weight: 600; color: #4a6b75; text-shadow: 1px 1px 1px rgba(255,255,255,0.5);">10+</div>
+            <div class="stat-label" style="font-size: 0.95rem; color: #4a6b75;">Yıllık Deneyim</div>
+          </div>
+          <div class="stat-item" style="background: rgba(255,255,255,0.25); padding: 1.2rem; border-radius: var(--radius); backdrop-filter: blur(5px);">
+            <i class="fas fa-smile-beam" style="font-size: 1.6rem; color: #4a6b75; margin-bottom: 0.8rem;"></i>
+            <div class="stat-number" style="font-size: 2.2rem; font-weight: 600; color: #4a6b75; text-shadow: 1px 1px 1px rgba(255,255,255,0.5);">1000+</div>
+            <div class="stat-label" style="font-size: 0.95rem; color: #4a6b75;">Mutlu Müşteri</div>
+          </div>
+          <div class="stat-item" style="background: rgba(255,255,255,0.25); padding: 1.2rem; border-radius: var(--radius); backdrop-filter: blur(5px);">
+            <i class="fas fa-home" style="font-size: 1.6rem; color: #4a6b75; margin-bottom: 0.8rem;"></i>
+            <div class="stat-number" style="font-size: 2.2rem; font-weight: 600; color: #4a6b75; text-shadow: 1px 1px 1px rgba(255,255,255,0.5);">20+</div>
+            <div class="stat-label" style="font-size: 0.95rem; color: #4a6b75;">Seçkin Villa</div>
+          </div>
+          <div class="stat-item" style="background: rgba(255,255,255,0.25); padding: 1.2rem; border-radius: var(--radius); backdrop-filter: blur(5px);">
+            <i class="fas fa-award" style="font-size: 1.6rem; color: #4a6b75; margin-bottom: 0.8rem;"></i>
+            <div class="stat-number" style="font-size: 2.2rem; font-weight: 600; color: #4a6b75; text-shadow: 1px 1px 1px rgba(255,255,255,0.5);">%98</div>
+            <div class="stat-label" style="font-size: 0.95rem; color: #4a6b75;">Memnuniyet</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sertifika ve İzinler Bölümü -->
+      <div class="certificates-section">
+        <h2 style="text-align: center; margin-bottom: 1.5rem;">Sertifikalar ve İzinler</h2>
+        <div class="certificates-grid">
+          <div class="certificate-item" onclick="openModal('assets/img/kvtb.svg', 'Kültür ve Turizm Bakanlığı Logosu')">
+            <div class="certificate-image">
+              <img src="assets/img/kvtb.svg" alt="Kültür ve Turizm Bakanlığı Logosu" />
+            </div>
+            <div class="certificate-title">Kurumsal Kimlik</div>
+            <div class="certificate-desc">BiREBİRVİLLA Turizm ve Ticaret Ltd. Şti. olarak 2021'den beri kurumsal hizmet</div>
+          </div>
+          
+          <div class="certificate-item" onclick="openModal('assets/img/barastar.svg', 'Bara Star Turizm Logosu')">
+            <div class="certificate-image">
+              <img src="assets/img/barastar.svg" alt="Bara Star Turizm Logosu" />
+            </div>
+            <div class="certificate-title">Bara Star Turizm</div>
+            <div class="certificate-desc">Türkiye Seyahat Acentaları Birliği Bara Star Turizm ünvanı</div>
+          </div>
+          
+          <div class="certificate-item" onclick="openModal('assets/img/seyahatecenasi.svg', 'Seyahat Acentası Logosu')">
+            <div class="certificate-image">
+              <img src="assets/img/seyahatecenasi.svg" alt="Seyahat Acentası Logosu" />
+            </div>
+            <div class="certificate-title">A Grubu Seyahat Acentası</div>
+            <div class="certificate-desc">Belge No: 16777 ile A grubu seyahat acentası yetkisi</div>
+          </div>
+          
+          <div class="certificate-item" onclick="openModal('assets/img/kultur.svg', 'Kültür ve Turizm Bakanlığı Logosu')">
+            <div class="certificate-image">
+              <img src="assets/img/kultur.svg" alt="Kültür ve Turizm Bakanlığı Logosu" />
+            </div>
+            <div class="certificate-title">Kültür ve Turizm Bakanlığı</div>
+            <div class="certificate-desc">Belge No: 48-8841 ile resmi izin ve onay</div>
+          </div>
+          
+          <div class="certificate-item" onclick="openModal('assets/img/guvenlik.svg', 'Güvenlik Sertifikası Logosu')">
+            <div class="certificate-image">
+              <img src="assets/img/guvenlik.svg" alt="Güvenlik Sertifikası Logosu" />
+            </div>
+            <div class="certificate-title">Güvenlik Sertifikası</div>
+            <div class="certificate-desc">ISO 9001 kalite yönetim sistemi belgesi</div>
+          </div>
+          
+          <div class="certificate-item" onclick="openModal('assets/img/odeme.svg', 'Ödeme Güvenliği Logosu')">
+            <div class="certificate-image">
+              <img src="assets/img/odeme.svg" alt="Ödeme Güvenliği Logosu" />
+            </div>
+            <div class="certificate-title">Ödeme Güvenliği</div>
+            <div class="certificate-desc">SSL sertifikası ile güvenli ödeme altyapısı</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal (Popup) -->
+      <div id="imageModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <img id="modalImage" src="" alt="" />
+          <h3 id="modalTitle"></h3>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <div class="chips">
+        <span class="chip">7/24 Destek</span>
+        <span class="chip">Güvenli Ödeme</span>
+        <span class="chip">Doğrulanmış İlanlar</span>
+        <span class="chip">Memnuniyet Garantisi</span>
+        <span class="chip">A Grubu Acenta</span>
+        <span class="chip">10+ Yıl Deneyim</span>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand">Villa Kiralama</div>
+        <div class="sub">Denizin, doğanın ve huzurun buluştuğu özel tatil villalarında, tatilinizi evinizin rahatlığında yaşayın.</div>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="Facebook"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="Twitter"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="footer-icon"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3 class="footer-heading">Hızlı Bağlantılar</h3>
+        <a href="index.html">Anasayfa</a>
+        <a href="villas.html">Villalarımız</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="rezervasyon.html">Rezervasyon</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">İletişim</h3>
+        <p class="footer-contact"><i class="footer-icon"></i> +90 535 502 92 57</p>
+        <p class="footer-contact"><i class="footer-icon"></i> info@villakiralama.com</p>
+        <p class="footer-contact"><i class="footer-icon"></i> Fethiye, Muğla</p>
+        <div class="ktr-badge" role="note" aria-label="Kültür ve Turizm Bakanlığı Belge Bilgisi">
+          <img src="assets/img/kvtb.svg" alt="Kültür ve Turizm Bakanlığı Logosu" />
+          <div class="ktr-text">
+            <div class="ktr-title">Kültür ve Turizm Bakanlığı</div>
+            <div class="ktr-sub">Belge No : 48-8841</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div>© <span id="yil"></span> Villa Kiralama | Tüm hakları saklıdır.</div>
+      <div class="footer-legal"><a href="#">Gizlilik</a> · <a href="#">Şartlar</a> · <a href="iletisim.html">İletişim</a></div>
+    </div>
+  </footer>
+
+  
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Modal fonksiyonları
+    function openModal(imageSrc, title) {
+      const modal = document.getElementById('imageModal');
+      const modalImage = document.getElementById('modalImage');
+      const modalTitle = document.getElementById('modalTitle');
+      
+      modalImage.src = imageSrc;
+      modalImage.alt = title;
+      modalTitle.textContent = title;
+      
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden'; // Sayfa kaydırmayı engelle
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('imageModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto'; // Sayfa kaydırmayı geri aç
+    }
+
+    // Modal dışına tıklandığında kapat
+    window.onclick = function(event) {
+      const modal = document.getElementById('imageModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // ESC tuşu ile modal kapatma
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
+
+

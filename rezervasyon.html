@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Villa Kiralama | Rezervasyon</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="index.html" class="logo"><span class="logo-badge"></span>Villa Kiralama</a>
+      <button class="menu-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" aria-label="Ana menü">
+        <a href="index.html">Anasayfa</a>
+        <a href="villas.html">Villalar</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+      <span class="btn nav-cta" aria-disabled="true">Rezervasyon</span>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      
+      <h1 class="section-title">Rezervasyon</h1>
+      <p class="section-subtitle">Tarih, kişi sayısı ve iletişim bilgilerinizi girin. Ücret otomatik hesaplanır.</p>
+
+      <form id="rezForm" class="form-card" novalidate>
+        <div class="form-row">
+          <div>
+            <label for="villa">Villa</label>
+            <select id="villa" required>
+              <option value="" disabled selected>Seçiniz</option>
+              <option value="marina" data-price="12000" data-cap="10">Villa Marina (₺12000/gece) · Maks 10</option>
+              <option value="verde" data-price="15200" data-cap="8">Villa Verde (₺15200/gece) · Maks 8</option>
+              <option value="luna" data-price="14300" data-cap="8">Villa Luna (₺14300/gece) · Maks 8</option>
+              <option value="luna" data-price="17500" data-cap="10">Villa Coral (₺17500/gece) · Maks 10</option>
+            </select>
+          </div>
+          <div>
+            <label for="kisi">Kişi Sayısı</label>
+            <input type="number" id="kisi" min="1" max="12" value="2" required />
+            <div class="helper" id="capInfo">Maks kapasite: -</div>
+          </div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="form-row">
+          <div>
+            <label for="giris">Giriş</label>
+            <input type="date" id="giris" required />
+          </div>
+          <div>
+            <label for="cikis">Çıkış</label>
+            <input type="date" id="cikis" required />
+          </div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="form-row">
+          <div>
+            <label for="ad">Ad Soyad</label>
+            <input type="text" id="ad" required />
+          </div>
+          <div>
+            <label for="tel">Telefon</label>
+            <input type="tel" id="tel" placeholder="05xx xxx xx xx" required />
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div>
+          <label for="eposta">E-posta</label>
+          <input type="email" id="eposta" required />
+        </div>
+        <div class="spacer"></div>
+        <div>
+          <label for="not">Not (opsiyonel)</label>
+          <textarea id="not" rows="3" placeholder="Özel istekleriniz..."></textarea>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="form-row">
+          <div>
+            <div class="helper">Gecelik Fiyat</div>
+            <div id="gecelik" class="price">₺0</div>
+          </div>
+          <div>
+            <div class="helper">Toplam (Vergiler dahil)</div>
+            <div id="toplam" class="price">₺0</div>
+            <div id="kampanya" class="helper" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="spacer"></div>
+        <button type="submit" class="btn">Rezervasyon Talebi Gönder</button>
+        <div class="helper">Form gönderildiğinde size e-posta ile dönüş yapacağız.</div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand">Villa Kiralama</div>
+        <div class="sub">Denizin, doğanın ve huzurun buluştuğu özel tatil villalarında, tatilinizi evinizin rahatlığında yaşayın.</div>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="Facebook"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="Twitter"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="footer-icon"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3 class="footer-heading">Hızlı Bağlantılar</h3>
+        <a href="index.html">Anasayfa</a>
+        <a href="villas.html">Villalarımız</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="rezervasyon.html">Rezervasyon</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">İletişim</h3>
+        <p class="footer-contact"><i class="footer-icon"></i> +90 535 502 92 57</p>
+        <p class="footer-contact"><i class="footer-icon"></i> info@villakiralama.com</p>
+        <p class="footer-contact"><i class="footer-icon"></i> Fethiye, Muğla</p>
+        <div class="ktr-badge" role="note" aria-label="Kültür ve Turizm Bakanlığı Belge Bilgisi">
+          <img src="assets/img/kvtb.svg" alt="Kültür ve Turizm Bakanlığı Logosu" />
+          <div class="ktr-text">
+            <div class="ktr-title">Kültür ve Turizm Bakanlığı</div>
+            <div class="ktr-sub">Belge No : 48-8841</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div>© <span id="yil"></span> Villa Kiralama | Tüm hakları saklıdır.</div>
+      <div class="footer-legal"><a href="#">Gizlilik</a> · <a href="#">Şartlar</a> · <a href="iletisim.html">İletişim</a></div>
+    </div>
+  </footer>
+
+  
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    const villa = document.getElementById('villa');
+    const giris = document.getElementById('giris');
+    const cikis = document.getElementById('cikis');
+    const gecelik = document.getElementById('gecelik');
+    const toplam = document.getElementById('toplam');
+    const form = document.getElementById('rezForm');
+    const kampanyaEl = document.getElementById('kampanya');
+
+    function currentPrice() {
+      const opt = villa.options[villa.selectedIndex];
+      return opt && opt.dataset.price ? Number(opt.dataset.price) : 0;
+    }
+    function currentCapacity(){
+      const opt = villa.options[villa.selectedIndex];
+      return opt && opt.dataset.cap ? Number(opt.dataset.cap) : null;
+    }
+    function nightsBetween(a, b){ return Math.round((b - a) / (1000*60*60*24)); }
+    function formatTL(n){ return `₺${(n||0).toLocaleString('tr-TR')}`; }
+    function isEarlyBooking(checkIn){
+      if(!checkIn) return false;
+      const today = new Date();
+      const d0 = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const d1 = new Date(checkIn.getFullYear(), checkIn.getMonth(), checkIn.getDate());
+      return nightsBetween(d0, d1) >= 30;
+    }
+
+    function recalc(){
+      const price = currentPrice();
+      gecelik.textContent = formatTL(price);
+      const gs = giris.value ? new Date(giris.value) : null;
+      const cs = cikis.value ? new Date(cikis.value) : null;
+      if(!gs || !cs || cs <= gs){ toplam.textContent = formatTL(0); if(kampanyaEl) kampanyaEl.textContent=''; return; }
+      const nights = nightsBetween(gs, cs);
+      const tax = 0.08; // %8 vergi varsayımı
+      let payableNights = nights;
+      const applied = [];
+      // 3 Gece Kal 2 Öde: marina ve luna için
+      const villaId = villa.value;
+      if((villaId === 'marina' || villaId === 'luna') && nights >= 3){
+        const free = Math.floor(nights / 3);
+        if(free > 0){
+          payableNights = nights - free;
+          applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`);
+        }
+      }
+      let subtotal = payableNights * price;
+      // Erken rezervasyon %20 (tüm villalar)
+      if(isEarlyBooking(gs)){
+        const disc = Math.round(subtotal * 0.20);
+        subtotal -= disc;
+        applied.push('%20 Erken Rezervasyon indirimi');
+      }
+      const total = Math.round(subtotal * (1 + tax));
+      toplam.textContent = formatTL(total);
+      if(kampanyaEl) kampanyaEl.textContent = applied.length ? `Uygulanan kampanyalar: ${applied.join(' + ')}` : '';
+    }
+    villa.addEventListener('change', ()=>{
+      recalc();
+      const cap = currentCapacity();
+      const capInfo = document.getElementById('capInfo');
+      if(cap){ capInfo.textContent = `Maks kapasite: ${cap}`; const kisiEl = document.getElementById('kisi'); kisiEl.max = cap; if(Number(kisiEl.value) > cap){ kisiEl.value = cap; } }
+      else { capInfo.textContent = 'Maks kapasite: -'; }
+    });
+    giris.addEventListener('change', recalc);
+    cikis.addEventListener('change', recalc);
+    recalc();
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if(!form.checkValidity()){ alert('Lütfen gerekli alanları doldurun.'); return; }
+      const cap = currentCapacity();
+      const kisiVal = Number(document.getElementById('kisi').value);
+      if(cap && kisiVal > cap){ alert(`Bu villa için maksimum kapasite ${cap} kişidir.`); return; }
+
+      const selectedOption = villa.options[villa.selectedIndex];
+      const villaName = selectedOption ? selectedOption.text : '';
+      const price = currentPrice();
+      const gs = giris.value ? new Date(giris.value) : null;
+      const cs = cikis.value ? new Date(cikis.value) : null;
+      const nights = (gs && cs && cs > gs) ? nightsBetween(gs, cs) : 0;
+      const tax = 0.08;
+      let payableNights = nights;
+      const applied = [];
+      if((villa.value === 'marina' || villa.value === 'luna') && nights >= 3){
+        const free = Math.floor(nights / 3);
+        if(free>0){ payableNights = nights - free; applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`); }
+      }
+      let subtotal = payableNights * price;
+      if(isEarlyBooking(gs)){
+        const disc = Math.round(subtotal * 0.20);
+        subtotal -= disc;
+        applied.push('%20 Erken Rezervasyon indirimi');
+      }
+      const total = Math.round(subtotal * (1 + tax));
+
+      const kisi = document.getElementById('kisi').value;
+      const ad = document.getElementById('ad').value.trim();
+      const tel = document.getElementById('tel').value.trim();
+      const eposta = document.getElementById('eposta').value.trim();
+      const not = document.getElementById('not').value.trim();
+
+      const lines = [
+        'Merhaba, Rezervasyon talebim var:',
+        `Villa: ${villaName}`,
+        `Giriş: ${giris.value || '-'}`,
+        `Çıkış: ${cikis.value || '-'}`,
+        `Gece Sayısı: ${nights}`,
+        `Kişi: ${kisi}`,
+        `Gecelik: ${price ? `₺${price.toLocaleString('tr-TR')}` : '-'}`,
+        `Toplam (vergili): ${total ? `₺${total.toLocaleString('tr-TR')}` : '-'}`,
+        ...(applied.length ? [`Kampanyalar: ${applied.join(' + ')}`] : []),
+        `Ad Soyad: ${ad}`,
+        `Telefon: ${tel}`,
+        `E-posta: ${eposta}`,
+        `Not: ${not || '-'}`
+      ];
+      const message = encodeURIComponent(lines.join('\n'));
+      const whatsappUrl = `https://wa.me/905355029257?text=${message}`;
+      window.location.href = whatsappUrl;
+    });
+  </script>
+</body>
+</html>
+
+

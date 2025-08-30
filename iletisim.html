@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Villa Kiralama | İletişim</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="index.html" class="logo"><span class="logo-badge"></span>Villa Kiralama</a>
+      <button class="menu-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" aria-label="Ana menü">
+        <a href="index.html">Anasayfa</a>
+        <a href="villas.html">Villalar</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+      <a href="rezervasyon.html" class="btn nav-cta">Rezervasyon</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h1 class="section-title">İletişim</h1>
+      <div class="form-row">
+        <div class="form-card">
+          <h2>Bize Ulaşın</h2>
+          <p class="muted">Sorularınız için formu doldurun, en kısa sürede dönüş yapalım.</p>
+          <form id="contactForm" novalidate>
+            <div class="form-row">
+              <div>
+                <label for="ad">Ad Soyad</label>
+                <input type="text" id="ad" required />
+              </div>
+              <div>
+                <label for="email">E-posta</label>
+                <input type="email" id="email" required />
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <div>
+              <label for="mesaj">Mesaj</label>
+              <textarea id="mesaj" rows="4" required></textarea>
+            </div>
+            <div class="spacer"></div>
+            <button type="submit" class="btn">Gönder</button>
+          </form>
+        </div>
+        <aside class="form-card">
+          <h2>İletişim Bilgileri</h2>
+          <p><strong>Telefon:</strong> <a href="tel:+905355029257">+90 535 502 92 57</a></p>
+          <p><strong>E-posta:</strong> <a href="mailto:info@villakiralama.com">info@villakiralama.com</a></p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn" href="https://wa.me/905355029257" target="_blank" rel="noopener" aria-label="WhatsApp">
+              WhatsApp'tan Yaz
+            </a>
+            <a class="btn btn-outline" href="mailto:info@villakiralama.com">E-posta Gönder</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand">Villa Kiralama</div>
+        <div class="sub">Denizin, doğanın ve huzurun buluştuğu özel tatil villalarında, tatilinizi evinizin rahatlığında yaşayın.</div>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="Facebook"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="Twitter"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="footer-icon"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3 class="footer-heading">Hızlı Bağlantılar</h3>
+        <a href="index.html">Anasayfa</a>
+        <a href="villas.html">Villalarımız</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="rezervasyon.html">Rezervasyon</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">İletişim</h3>
+        <p class="footer-contact"><i class="footer-icon"></i> +90 535 502 92 57</p>
+        <p class="footer-contact"><i class="footer-icon"></i> info@villakiralama.com</p>
+        <p class="footer-contact"><i class="footer-icon"></i> Fethiye, Muğla</p>
+        <div class="ktr-badge" role="note" aria-label="Kültür ve Turizm Bakanlığı Belge Bilgisi">
+          <img src="assets/img/kvtb.svg" alt="Kültür ve Turizm Bakanlığı Logosu" />
+          <div class="ktr-text">
+            <div class="ktr-title">Kültür ve Turizm Bakanlığı</div>
+            <div class="ktr-sub">Belge No : 48-8841</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div>© <span id="yil"></span> Villa Kiralama | Tüm hakları saklıdır.</div>
+      <div class="footer-legal"><a href="#">Gizlilik</a> · <a href="#">Şartlar</a> · <a href="iletisim.html">İletişim</a></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const form = e.currentTarget;
+      if(!form.checkValidity()){ alert('Lütfen tüm alanları doldurun.'); return; }
+      alert('Mesajınız gönderildi. Teşekkürler!');
+      form.reset();
+    })
+  </script>
+ 
+</body>
+</html>
+
+

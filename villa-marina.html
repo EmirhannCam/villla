@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Villa Marina | Detay ve Rezervasyon</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .gallery { 
+      display: grid; 
+      grid-template-columns: 2fr 1fr; 
+      gap: 16px; 
+      margin-bottom: 16px;
+    }
+    .gallery img { 
+      border-radius: var(--radius); 
+      height: 100%; 
+      object-fit: cover; 
+      width: 100%; 
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gallery img:hover {
+      transform: scale(1.01);
+      box-shadow: var(--shadow-md);
+    }
+    .gallery .side { 
+      display: grid; 
+      gap: 16px; 
+    }
+    .layout { 
+      display: grid; 
+      grid-template-columns: 1.5fr 1fr; 
+      gap: 28px; 
+      margin-top: 28px; 
+    }
+    .map-embed { 
+      border: 0; 
+      width: 100%; 
+      height: 280px; 
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    .villa-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .villa-title h1 {
+      margin: 0;
+    }
+    .villa-price {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    /* Villa Slider Styles */
+    .villa-slider {
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .slider-container {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      height: 450px;
+      box-shadow: var(--shadow-sm);
+    }
+    .slider-wrapper {
+      display: flex;
+      height: 100%;
+      transition: transform 0.5s ease;
+    }
+    .slider-slide {
+      flex: 0 0 100%;
+      height: 100%;
+    }
+    .slider-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Slider navigation removed and redesigned */
+    .slider-container {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      height: 450px;
+      box-shadow: var(--shadow-sm);
+      touch-action: pan-y;
+      user-select: none;
+    }
+    .slider-thumbs {
+      margin-top: 16px;
+      position: relative;
+    }
+    .thumbs-container {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scroll-behavior: smooth;
+    }
+    .thumb {
+      flex: 0 0 110px;
+      height: 80px;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .thumb:hover {
+      transform: translateY(-3px);
+      opacity: 1;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+    .thumb.active {
+      border-color: var(--color-primary);
+      opacity: 1;
+      transform: translateY(-3px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #ddd;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .dot.active {
+      background-color: var(--color-primary);
+      transform: scale(1.3);
+    }
+        /* EKLE */
+    .slider-container { overscroll-behavior: contain; }
+    .thumbs-container { overscroll-behavior-inline: contain; }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      .slider-container { height: 350px; }
+    }
+    @media (max-width: 580px) {
+      .slider-container { height: 280px; }
+      .slider-nav { width: 36px; height: 36px; font-size: 16px; }
+      .thumb { flex: 0 0 90px; height: 65px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Üst Menü -->
+  <header class="header">
+    <div class="container nav">
+      <a href="index.html" class="logo"><span class="logo-badge"></span>Villa Kiralama</a>
+      <button class="menu-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" aria-label="Ana menü">
+        <a href="index.html">Anasayfa</a>
+        <a href="villas.html">Villalar</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+      </nav>
+      <a href="rezervasyon.html" class="btn nav-cta">Rezervasyon</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <!-- Başlık ve kısa özellikler -->
+      <div class="villa-title">
+        <h1 class="section-title">Villa Marina</h1>
+        <div class="villa-price">₺12.000 <span style="font-size: 16px; font-weight: normal; opacity: 0.7">/ gece</span></div>
+      </div>
+      <div class="chips">
+        <span class="chip"><i class="fas fa-map-marker-alt" style="margin-right: 5px;"></i> Kaş</span>
+        <span class="chip"><i class="fas fa-door-open" style="margin-right: 5px;"></i> 5 Oda</span>
+        <span class="chip"><i class="fas fa-swimming-pool" style="margin-right: 5px;"></i> Özel Havuz</span>
+        <span class="chip"><i class="fas fa-users" style="margin-right: 5px;"></i> Maks 10 kişi</span>
+      </div>
+
+      <!-- Fotoğraf Galerisi (iç/dış çekim) -->
+      <div class="spacer"></div>
+      <div class="villa-slider">
+        <div class="slider-container">
+          <div class="slider-wrapper">
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina1.png" alt="Villa Luna ana görsel" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina2.png" alt="Bahçe/Havuz" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina3.png" alt="İç mekan" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina4.png" alt="Dış görünüm" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina5.png" alt="Küçük dış çekim" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina6.png" alt="Küçük havuz" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina7.png" alt="Küçük iç mekan" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina8.png" alt="Küçük dış görünüm" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina9.png" alt="Küçük dış çekim" /></div>
+            <div class="slider-slide"><img src="../villa-kiralama/assets/img/villamarina10.png" alt="Küçük dış alan" /></div>
+          </div>
+        </div>
+        <div class="slider-thumbs">
+          <div class="thumbs-container">
+            <div class="thumb active" data-index="0"><img src="../villa-kiralama/assets/img/villamarina1.png" alt="Villa Luna ana görsel" /></div>
+            <div class="thumb" data-index="1"><img src="../villa-kiralama/assets/img/villamarina2.png" alt="Bahçe/Havuz" /></div>
+            <div class="thumb" data-index="2"><img src="../villa-kiralama/assets/img/villamarina3.png" alt="İç mekan" /></div>
+            <div class="thumb" data-index="3"><img src="../villa-kiralama/assets/img/villamarina4.png" alt="Dış görünüm" /></div>
+            <div class="thumb" data-index="4"><img src="../villa-kiralama/assets/img/villamarina5.png" alt="Küçük dış çekim" /></div>
+            <div class="thumb" data-index="5"><img src="../villa-kiralama/assets/img/villamarina6.png" alt="Küçük havuz" /></div>
+            <div class="thumb" data-index="6"><img src="../villa-kiralama/assets/img/villamarina7.png" alt="Küçük iç mekan" /></div>
+            <div class="thumb" data-index="7"><img src="../villa-kiralama/assets/img/villamarina8.png" alt="Küçük dış görünüm" /></div>
+            <div class="thumb" data-index="8"><img src="../villa-kiralama/assets/img/villamarina9.png" alt="Küçük dış çekim" /></div>
+            <div class="thumb" data-index="9"><img src="../villa-kiralama/assets/img/villamarina10.png" alt="Küçük dış alan" /></div>
+          </div>
+        </div>
+        <div class="slider-dots">
+          <span class="dot active" data-index="0"></span>
+          <span class="dot" data-index="1"></span>
+          <span class="dot" data-index="2"></span>
+          <span class="dot" data-index="3"></span>
+          <span class="dot" data-index="4"></span>
+          <span class="dot" data-index="5"></span>
+          <span class="dot" data-index="6"></span>
+          <span class="dot" data-index="7"></span>
+          <span class="dot" data-index="8"></span>
+          <span class="dot" data-index="9"></span>
+        </div>
+      </div>
+
+      <!-- Fırsatlar / Kampanyalar (galeri altı) -->
+      <div class="spacer"></div>
+      <section class="section" aria-label="Fırsatlar">
+        <div class="campaigns">
+          <div class="campaign">
+            <h3>3 Gece Kal 2 Öde</h3>
+            <div class="meta">Seçili dönemlerde geçerli. Sınırlı süre.</div>
+          </div>
+          <div class="campaign">
+            <h3>Erken Rezervasyon %20</h3>
+            <div class="meta">Girişe en az 30 gün kala yapılan rezervasyonlarda.</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="layout">
+        <!-- Açıklama ve harita -->
+        <article class="form-card">
+          <h2>Villa Açıklaması</h2>
+          <p class="muted">Villa Marina, Kaş'ın eşsiz manzarasına hâkim, modern mimarili ve geniş teraslı bir villadır. Özel havuz, barbekü alanı ve açık mutfak ile konforlu bir tatil sunar.</p>
+          <div class="spacer"></div>
+          
+          <h3>Evin İç Özellikleri</h3>
+          <div class="features-grid">
+            <div class="feature-item">
+              <span class="feature-icon">🧊</span>
+              <span class="feature-text">Buzdolabı</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🍽️</span>
+              <span class="feature-text">Bulaşık makinesi</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🛁</span>
+              <span class="feature-text">Ebeveyn banyosu</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🪑</span>
+              <span class="feature-text">Full eşyalı ve mobilyalı</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🛀</span>
+              <span class="feature-text">Oda İçinde Jakuzi</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">📺</span>
+              <span class="feature-text">Lcd televizyon</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🔥</span>
+              <span class="feature-text">Mikrodalga fırın</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🍳</span>
+              <span class="feature-text">Fırın</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🍲</span>
+              <span class="feature-text">Ocak</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">💨</span>
+              <span class="feature-text">Saç kurutma makinası</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🌐</span>
+              <span class="feature-text">Wifi</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🍲</span>
+              <span class="feature-text">Tencere seti</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">☕</span>
+              <span class="feature-text">Su ısıtıcı / Kettle</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🍞</span>
+              <span class="feature-text">Tost makinesi</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">👕</span>
+              <span class="feature-text">Çamaşır kurutmalık</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🧺</span>
+              <span class="feature-text">Çamaşır makinesi</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">👔</span>
+              <span class="feature-text">Ütü ve ütü masası</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">❄️</span>
+              <span class="feature-text">Klima</span>
+            </div>
+          </div>
+          
+          <div class="spacer"></div>
+          <h3>Dış Özellikler</h3>
+          <div class="features-grid">
+            <div class="feature-item">
+              <span class="feature-icon">🅿️</span>
+              <span class="feature-text">Açık otopark</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🌳</span>
+              <span class="feature-text">Özel bahçeli</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🍖</span>
+              <span class="feature-text">Barbekü (Mangal)</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🏡</span>
+              <span class="feature-text">Veranda</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🏊</span>
+              <span class="feature-text">Özel yüzme havuzu</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🌅</span>
+              <span class="feature-text">Teras</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🚪</span>
+              <span class="feature-text">Balkon</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">🚗</span>
+              <span class="feature-text">Otopark alanı</span>
+            </div>
+          </div>
+          
+          <div class="spacer"></div>
+          <h3>Yüzme Havuzu Bilgileri</h3>
+          <div class="info-section">
+            <p>Özel yüzme havuzu, 24 saat kullanıma açıktır. Havuz derinliği 1.40 - 1.80 m arasındadır. Havuz bakımı düzenli olarak yapılmaktadır.</p>
+          </div>
+          
+          <div class="spacer"></div>
+          <h3>Kurallar</h3>
+          <div class="rules-section">
+            <div class="rule-item">
+              <span class="rule-icon">🚭</span>
+              <span class="rule-text">İçeride Sigara İçilmez</span>
+            </div>
+            <div class="rule-item">
+              <span class="rule-icon">🐾</span>
+              <span class="rule-text">Evcil Hayvan Giremez</span>
+            </div>
+            <div class="rule-item">
+              <span class="rule-icon">🎉</span>
+              <span class="rule-text">Parti Düzenlenemez</span>
+            </div>
+            <div class="rule-item">
+              <span class="rule-icon">👶</span>
+              <span class="rule-text">Bebeklere Uygun (0-2)</span>
+            </div>
+            <div class="rule-item">
+              <span class="rule-icon">👧</span>
+              <span class="rule-text">Çocuklara Uygun (3-12)</span>
+            </div>
+          </div>
+          
+          <div class="spacer"></div>
+          <h3>Fiyata Dahil Olanlar</h3>
+          <div class="included-section">
+            <div class="included-item">
+              <span class="included-icon">⚡</span>
+              <span class="included-text">Elektrik Kullanımı</span>
+            </div>
+            <div class="included-item">
+              <span class="included-icon">💧</span>
+              <span class="included-text">Su Kullanımı</span>
+            </div>
+            <div class="included-item">
+              <span class="included-icon">🌐</span>
+              <span class="included-text">İnternet</span>
+            </div>
+            <div class="included-item">
+              <span class="included-icon">🏊</span>
+              <span class="included-text">Havuz ve Bahçe Bakımı</span>
+            </div>
+          </div>
+          
+          <div class="spacer"></div>
+          <h3>Hasar Depozitosu</h3>
+          <div class="info-section">
+            <p>Konaklama başlangıcında 2000₺ hasar depozitosu alınmaktadır. Çıkışta herhangi bir hasar olmaması durumunda iade edilir.</p>
+          </div>
+          
+          <div class="spacer"></div>
+          <h3>Konum</h3>
+          <iframe class="map-embed" loading="lazy" allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d49147.87415956848!2d29.5973662!3d36.2019157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c0609dd40b06f9%3A0x15789814e0e0c2f!2sKa%C5%9F%2C%20Antalya!5e0!3m2!1str!2str!4v1700000000000"></iframe>
+          <div class="spacer"></div>
+          <div class="chips">
+            <span class="chip">3 Oda</span>
+            <span class="chip">2 Banyo</span>
+            <span class="chip">Wi‑Fi</span>
+            <span class="chip">Klima</span>
+          </div>
+        </article>
+
+        <!-- Rezervasyon Formu (kapasite kontrollü) -->
+        <aside class="form-card">
+          <h2>Rezervasyon</h2>
+          <!-- Kapasite ve fiyat sayfaya özel: Marina -> max 10, gecelik 5200 -->
+          <form id="villaForm" novalidate>
+            <div class="form-row">
+              <div>
+                <label for="giris">Giriş Tarihi</label>
+                <input type="date" id="giris" required />
+              </div>
+              <div>
+                <label for="cikis">Çıkış Tarihi</label>
+                <input type="date" id="cikis" required />
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="form-row">
+              <div>
+                <label for="kisi">Kişi Sayısı</label>
+                <input type="number" id="kisi" min="1" max="10" value="2" required />
+                <div class="helper">Maks kapasite: 10</div>
+              </div>
+              <div>
+                <label>Gecelik Fiyat</label>
+                <input type="text" value="₺12000" disabled />
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="form-row">
+              <div>
+                <label for="ad">Ad Soyad</label>
+                <input type="text" id="ad" required />
+              </div>
+              <div>
+                <label for="tel">Telefon</label>
+                <input type="tel" id="tel" placeholder="05xx xxx xx xx" required />
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <div>
+              <label for="eposta">E-posta</label>
+              <input type="email" id="eposta" required />
+            </div>
+            <div class="spacer"></div>
+            <div>
+              <label for="not">Not (opsiyonel)</label>
+              <textarea id="not" rows="3" placeholder="Özel istekleriniz..."></textarea>
+            </div>
+            <div class="spacer"></div>
+            <div class="helper" id="tutarInfo">Toplam: ₺0</div>
+            <div class="spacer"></div>
+            <button type="submit" class="btn">WhatsApp ile Gönder</button>
+          </form>
+        </aside>
+      </div>
+      
+    </div>
+  </main>
+
+  <!-- Alt Bilgi ve Mobil Hızlı Linkler -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="brand">Villa Kiralama</div>
+        <div class="sub">Denizin, doğanın ve huzurun buluştuğu özel tatil villalarında, tatilinizi evinizin rahatlığında yaşayın.</div>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="Facebook"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="Twitter"><i class="footer-icon"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="footer-icon"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3 class="footer-heading">Hızlı Bağlantılar</h3>
+        <a href="index.html">Anasayfa</a>
+        <a href="villas.html">Villalarımız</a>
+        <a href="hakkimizda.html">Hakkımızda</a>
+        <a href="iletisim.html">İletişim</a>
+        <a href="rezervasyon.html">Rezervasyon</a>
+      </div>
+      <div>
+        <h3 class="footer-heading">İletişim</h3>
+        <p class="footer-contact"><i class="footer-icon"></i> +90 535 502 92 57</p>
+        <p class="footer-contact"><i class="footer-icon"></i> info@villakiralama.com</p>
+        <p class="footer-contact"><i class="footer-icon"></i> Fethiye, Muğla</p>
+        <div class="ktr-badge" role="note" aria-label="Kültür ve Turizm Bakanlığı Belge Bilgisi">
+          <img src="assets/img/kvtb.svg" alt="Kültür ve Turizm Bakanlığı Logosu" />
+          <div class="ktr-text">
+            <div class="ktr-title">Kültür ve Turizm Bakanlığı</div>
+            <div class="ktr-sub">Belge No : 48-8841</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div>© <span id="yil"></span> Villa Kiralama | Tüm hakları saklıdır.</div>
+      <div class="footer-legal"><a href="#">Gizlilik</a> · <a href="#">Şartlar</a> · <a href="iletisim.html">İletişim</a></div>
+    </div>
+  </footer>
+
+  <div class="mobile-quick-links" role="navigation" aria-label="Hızlı bağlantılar">
+    <a class="btn btn-outline" href="hakkimizda.html">Hakkımızda</a>
+    <a class="btn" href="iletisim.html">İletişim</a>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+     // Villa Slider Fonksiyonalitesi (DÜZELTİLMİŞ)
+document.addEventListener('DOMContentLoaded', function () {
+  const root = document.querySelector('.villa-slider');
+  if (!root) return;
+
+  const sliderContainer = root.querySelector('.slider-container');
+  // Aynı slider'a ikinci kez init etmeyi engelle (main.js vs. çakışmasın)
+  if (sliderContainer.dataset.sliderInit === '1') return;
+  sliderContainer.dataset.sliderInit = '1';
+
+  const sliderWrapper   = root.querySelector('.slider-wrapper');
+  const slides          = root.querySelectorAll('.slider-slide');
+  const thumbs          = root.querySelectorAll('.thumb');
+  const dots            = root.querySelectorAll('.dot');
+  const thumbsContainer = root.querySelector('.thumbs-container');
+
+  let currentIndex = 0;
+  const totalSlides = slides.length;
+
+  // ---- Yardımcı: aktif thumb'ı yatayda merkezle (scrollIntoView YOK) ----
+  function centerActiveThumb() {
+    const active = root.querySelector('.thumb.active');
+    if (!active || !thumbsContainer) return;
+
+    const cRect = thumbsContainer.getBoundingClientRect();
+    const tRect = active.getBoundingClientRect();
+    const targetLeft =
+      thumbsContainer.scrollLeft +
+      (tRect.left - cRect.left) -
+      (cRect.width / 2 - tRect.width / 2);
+
+    thumbsContainer.scrollTo({ left: targetLeft, behavior: 'smooth' });
+  }
+
+  // ---- Slide değiştir ----
+  function goToSlide(index) {
+    if (index < 0) index = totalSlides - 1;
+    if (index >= totalSlides) index = 0;
+
+    currentIndex = index;
+    sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    thumbs.forEach((thumb, i) => thumb.classList.toggle('active', i === currentIndex));
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+
+    // scrollIntoView yerine güvenli yatay kaydırma
+    centerActiveThumb();
+  }
+
+  // ---- Auto slide kontrol ----
+  let autoSlideInterval = null;
+  let resumeTimeout = null;
+
+  function startAutoSlide() {
+    stopAutoSlide();
+    autoSlideInterval = setInterval(() => {
+      goToSlide(currentIndex + 1);
+    }, 5000);
+  }
+  function stopAutoSlide() {
+    if (autoSlideInterval) { clearInterval(autoSlideInterval); autoSlideInterval = null; }
+  }
+  function pauseThenResume(delay = 3000) {
+    stopAutoSlide();
+    if (resumeTimeout) clearTimeout(resumeTimeout);
+    resumeTimeout = setTimeout(startAutoSlide, delay);
+  }
+
+  // ---- Etkileşimler ----
+  thumbs.forEach((thumb, i) => {
+    thumb.addEventListener('click', () => { goToSlide(i); pauseThenResume(); });
+  });
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => { goToSlide(i); pauseThenResume(); });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      e.preventDefault(); // sayfanın ok tuşuyla kaymasını engelle
+      goToSlide(currentIndex + (e.key === 'ArrowRight' ? 1 : -1));
+      pauseThenResume();
+    }
+  });
+
+  // ---- Touch swipe ----
+  let startX = 0, startY = 0, swiping = false;
+
+  sliderContainer.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    startX = t.clientX; startY = t.clientY;
+    swiping = true;
+    stopAutoSlide(); // etkileşimde dur
+  }, { passive: true });
+
+  sliderContainer.addEventListener('touchmove', (e) => {
+    if (!swiping) return;
+    const t = e.touches[0];
+    const diffX = t.clientX - startX;
+    const diffY = t.clientY - startY;
+
+    // yatay hareket dikeyden büyükse sayfa kaymasın
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  sliderContainer.addEventListener('touchend', (e) => {
+    if (!swiping) return;
+    swiping = false;
+
+    const t = e.changedTouches[0];
+    const diffX = t.clientX - startX;
+    const threshold = 50;
+
+    if (diffX > threshold)      goToSlide(currentIndex - 1);
+    else if (diffX < -threshold) goToSlide(currentIndex + 1);
+
+    pauseThenResume(); // 3 sn sonra otomatik devam et
+  });
+
+  // Hover'da durdur (masaüstü)
+  sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+  sliderContainer.addEventListener('mouseleave', () => pauseThenResume(1000));
+
+  // Başlat
+  startAutoSlide();
+});
+
+
+
+    // Sayfaya özel JS: fiyat hesaplama, kapasite kontrolü ve WhatsApp yönlendirme
+    const giris = document.getElementById('giris');
+    const cikis = document.getElementById('cikis');
+    const tutarInfo = document.getElementById('tutarInfo');
+    const form = document.getElementById('villaForm');
+    const pricePerNight = 12000; // Marina fiyatı
+    const maxCapacity = 10; // Marina kapasite
+    function nightsBetween(a,b){ return Math.round((b - a) / (1000*60*60*24)); }
+    function isEarlyBooking(d){ if(!d) return false; const t=new Date(); const d0=new Date(t.getFullYear(),t.getMonth(),t.getDate()); const d1=new Date(d.getFullYear(),d.getMonth(),d.getDate()); return nightsBetween(d0,d1)>=30; }
+    function calc(){
+      const gs = giris.value ? new Date(giris.value) : null;
+      const cs = cikis.value ? new Date(cikis.value) : null;
+      if (!gs || !cs || cs <= gs) { tutarInfo.textContent = 'Toplam: ₺0'; return; }
+      const nights = nightsBetween(gs, cs);
+      const tax = 0.08;
+      let payable = nights;
+      const applied = [];
+      if(nights>=3){ const free=Math.floor(nights/3); if(free>0){ payable=nights-free; applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`); } }
+      let subtotal = payable * pricePerNight;
+      if(isEarlyBooking(gs)){ const disc=Math.round(subtotal*0.20); subtotal-=disc; applied.push('%20 Erken Rezervasyon indirimi'); }
+      const total = Math.round(subtotal * (1+tax));
+      tutarInfo.textContent = `Toplam: ₺${total.toLocaleString('tr-TR')}${applied.length?` — ${applied.join(' + ')}`:''}`;
+    }
+    giris.addEventListener('change', calc);
+    cikis.addEventListener('change', calc);
+    calc();
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if(!form.checkValidity()){ alert('Lütfen gerekli alanları doldurun.'); return; }
+      const kisiVal = Number(document.getElementById('kisi').value);
+      if (kisiVal > maxCapacity) { alert(`Bu villa için maksimum kapasite ${maxCapacity} kişidir.`); return; }
+      const gs = giris.value || '-';
+      const cs = cikis.value || '-';
+      const nights = (giris.value && cikis.value) ? nightsBetween(new Date(giris.value), new Date(cikis.value)) : 0;
+      let payable = nights; const applied=[]; if(nights>=3){ const free=Math.floor(nights/3); if(free>0){ payable=nights-free; applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`); } }
+      let subtotal = payable * pricePerNight; if(giris.value && isEarlyBooking(new Date(giris.value))){ const disc=Math.round(subtotal*0.20); subtotal-=disc; applied.push('%20 Erken Rezervasyon indirimi'); }
+      const total = Math.round(subtotal * 1.08);
+      const ad = document.getElementById('ad').value.trim();
+      const tel = document.getElementById('tel').value.trim();
+      const eposta = document.getElementById('eposta').value.trim();
+      const notText = document.getElementById('not').value.trim();
+      const lines = [
+        'Merhaba, Villa Marina için rezervasyon talebim var:',
+        `Giriş: ${gs}`,
+        `Çıkış: ${cs}`,
+        `Gece Sayısı: ${nights}`,
+        `Kişi: ${kisiVal}`,
+        `Gecelik: ₺${pricePerNight.toLocaleString('tr-TR')}`,
+        `Toplam (vergili): ₺${Math.round(total).toLocaleString('tr-TR')}`,
+        ...(applied.length? [`Kampanyalar: ${applied.join(' + ')}`] : []),
+        `Ad Soyad: ${ad}`,
+        `Telefon: ${tel}`,
+        `E-posta: ${eposta}`,
+        `Not: ${notText || '-'}`
+      ];
+      const message = encodeURIComponent(lines.join('\n'));
+      window.location.href = `https://wa.me/905355029257?text=${message}`;
+    });
+  </script>
+</body>
+</html>
+
+
