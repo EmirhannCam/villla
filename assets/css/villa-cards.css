@@ -1,0 +1,179 @@
+/* Villa Kartları için Modern Tasarım Stilleri */
+
+/* Villa Kart Stilleri */
+.villa-card {
+  position: relative;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.villa-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Villa Kart Slider */
+.villa-slider {
+  position: relative;
+  overflow: hidden;
+  height: 280px;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.villa-slides {
+  display: flex;
+  height: 100%;
+  transition: transform 0.4s ease;
+}
+
+.villa-slide {
+  min-width: 100%;
+  height: 100%;
+}
+
+.villa-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Slider Navigasyon */
+.villa-slider-nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  padding: 0 10px;
+}
+
+.villa-slider-btn {
+  pointer-events: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-text);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+}
+
+.villa-slider-btn[data-prev] {
+  transform: translateX(-10px);
+}
+
+.villa-card:hover .villa-slider-btn {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.villa-slider-btn:hover {
+  background-color: white;
+  color: var(--color-primary);
+}
+
+/* Slider Dots */
+.villa-slider-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  z-index: 5;
+}
+
+.villa-slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.villa-slider-dot.active {
+  background: var(--color-primary);
+  transform: scale(1.2);
+}
+
+/* Villa Kart İçeriği */
+.villa-card-body {
+  padding: 16px 20px;
+}
+
+.villa-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--color-text);
+}
+
+.villa-card-meta {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-bottom: 12px;
+}
+
+.villa-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 16px;
+}
+
+.villa-card-price {
+  font-weight: 600;
+  color: var(--color-primary-600);
+}
+
+/* Hover Efektleri */
+.villa-card .btn {
+  transform: translateY(0);
+  transition: transform 0.3s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.villa-card:hover .btn {
+  transform: translateY(-2px);
+}
+
+/* Responsive Ayarlar */
+@media (max-width: 768px) {
+  .villa-slider {
+    height: 220px;
+  }
+  
+  .villa-card-body {
+    padding: 14px 16px;
+  }
+  
+  .villa-card-footer {
+    padding: 0 16px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .villa-slider {
+    height: 180px;
+  }
+  
+  .villa-slider-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
