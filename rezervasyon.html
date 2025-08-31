@@ -38,7 +38,9 @@
               <option value="marina" data-price="12000" data-cap="10">Villa Marina (₺12000/gece) · Maks 10</option>
               <option value="verde" data-price="15200" data-cap="8">Villa Verde (₺15200/gece) · Maks 8</option>
               <option value="luna" data-price="14300" data-cap="8">Villa Luna (₺14300/gece) · Maks 8</option>
-              <option value="luna" data-price="17500" data-cap="10">Villa Coral (₺17500/gece) · Maks 10</option>
+              <option value="coral" data-price="17500" data-cap="10">Villa Coral (₺17500/gece) · Maks 10</option>
+              <option value="azur" data-price="19800" data-cap="12">Villa Azur (₺19800/gece) · Maks 12</option>
+              <option value="serenity" data-price="11900" data-cap="6">Villa Serenity (₺11900/gece) · Maks 6</option>
             </select>
           </div>
           <div>
@@ -228,10 +230,20 @@
       const tax = 0.08;
       let payableNights = nights;
       const applied = [];
-      if((villa.value === 'marina' || villa.value === 'luna') && nights >= 3){
+      if (
+        (villa.value === 'marina' || 
+         villa.value === 'luna' || 
+         villa.value === 'azur' || 
+         villa.value === 'serenity') 
+         && nights >= 3
+      ) {
         const free = Math.floor(nights / 3);
-        if(free>0){ payableNights = nights - free; applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`); }
+        if (free > 0) {
+          payableNights = nights - free;
+          applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`);
+        }
       }
+
       let subtotal = payableNights * price;
       if(isEarlyBooking(gs)){
         const disc = Math.round(subtotal * 0.20);
