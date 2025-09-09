@@ -28,62 +28,74 @@
       
       <h1 class="section-title">Rezervasyon</h1>
       <p class="section-subtitle">Tarih, kişi sayısı ve iletişim bilgilerinizi girin. Ücret otomatik hesaplanır.</p>
-
-      <form id="rezForm" class="form-card" novalidate>
+      <form id="rezForm" action="https://formspree.io/f/mdklbkra" method="POST" class="form-card" novalidate>
+  
+        <!-- Honeypot (görünmez spam kontrolü) -->
+        <input type="text" id="website" name="website" style="display:none" tabindex="-1" autocomplete="off" />
+        
+        <!-- Gizli alanlar: hesaplanan fiyat ve toplam -->
+        <input type="hidden" name="gecelik" id="gecelikHidden">
+        <input type="hidden" name="toplam" id="toplamHidden">
+        <input type="hidden" name="kampanya" id="kampanyaHidden">
+      
+        <!-- Villa ve kişi -->
         <div class="form-row">
           <div>
             <label for="villa">Villa</label>
-            <select id="villa" required>
+            <select id="villa" name="villa" required>
               <option value="" disabled selected>Seçiniz</option>
               <option value="marina" data-price="12000" data-cap="10">Villa Marina (₺12000/gece) · Maks 10</option>
               <option value="verde" data-price="15200" data-cap="8">Villa Verde (₺15200/gece) · Maks 8</option>
               <option value="luna" data-price="14300" data-cap="8">Villa Luna (₺14300/gece) · Maks 8</option>
               <option value="coral" data-price="17500" data-cap="10">Villa Coral (₺17500/gece) · Maks 10</option>
-              <option value="azur" data-price="19800" data-cap="12">Villa Azur (₺19800/gece) · Maks 12</option>
-              <option value="serenity" data-price="11900" data-cap="6">Villa Serenity (₺11900/gece) · Maks 6</option>
             </select>
           </div>
           <div>
             <label for="kisi">Kişi Sayısı</label>
-            <input type="number" id="kisi" min="1" max="12" value="2" required />
+            <input type="number" id="kisi" name="kisi" min="1" max="12" value="2" required />
             <div class="helper" id="capInfo">Maks kapasite: -</div>
           </div>
         </div>
-
+      
+        <!-- Tarihler -->
         <div class="spacer"></div>
         <div class="form-row">
           <div>
             <label for="giris">Giriş</label>
-            <input type="date" id="giris" required />
+            <input type="date" id="giris" name="giris" required />
           </div>
           <div>
             <label for="cikis">Çıkış</label>
-            <input type="date" id="cikis" required />
+            <input type="date" id="cikis" name="cikis" required />
           </div>
         </div>
-
+      
+        <!-- Kişisel bilgiler -->
         <div class="spacer"></div>
         <div class="form-row">
           <div>
             <label for="ad">Ad Soyad</label>
-            <input type="text" id="ad" required />
+            <input type="text" id="ad" name="ad" required />
           </div>
           <div>
             <label for="tel">Telefon</label>
-            <input type="tel" id="tel" placeholder="05xx xxx xx xx" required />
+            <input type="tel" id="tel" name="tel" placeholder="05xx xxx xx xx" required />
           </div>
         </div>
+      
         <div class="spacer"></div>
         <div>
           <label for="eposta">E-posta</label>
-          <input type="email" id="eposta" required />
+          <input type="email" id="eposta" name="eposta" required />
         </div>
+      
         <div class="spacer"></div>
         <div>
           <label for="not">Not (opsiyonel)</label>
-          <textarea id="not" rows="3" placeholder="Özel istekleriniz..."></textarea>
+          <textarea id="not" name="not" rows="3" placeholder="Özel istekleriniz..."></textarea>
         </div>
-
+      
+        <!-- Fiyat bilgisi -->
         <div class="spacer"></div>
         <div class="form-row">
           <div>
@@ -96,11 +108,12 @@
             <div id="kampanya" class="helper" aria-live="polite"></div>
           </div>
         </div>
-
+      
         <div class="spacer"></div>
         <button type="submit" class="btn">Rezervasyon Talebi Gönder</button>
         <div class="helper">Form gönderildiğinde size e-posta ile dönüş yapacağız.</div>
       </form>
+      
     </div>
   </main>
 
@@ -155,7 +168,7 @@
     const toplam = document.getElementById('toplam');
     const form = document.getElementById('rezForm');
     const kampanyaEl = document.getElementById('kampanya');
-
+    
     function currentPrice() {
       const opt = villa.options[villa.selectedIndex];
       return opt && opt.dataset.price ? Number(opt.dataset.price) : 0;
@@ -173,7 +186,7 @@
       const d1 = new Date(checkIn.getFullYear(), checkIn.getMonth(), checkIn.getDate());
       return nightsBetween(d0, d1) >= 30;
     }
-
+    
     function recalc(){
       const price = currentPrice();
       gecelik.textContent = formatTL(price);
@@ -181,27 +194,15 @@
       const cs = cikis.value ? new Date(cikis.value) : null;
       if(!gs || !cs || cs <= gs){ toplam.textContent = formatTL(0); if(kampanyaEl) kampanyaEl.textContent=''; return; }
       const nights = nightsBetween(gs, cs);
-      const tax = 0.08; // %8 vergi varsayımı
+      const tax = 0.08;
       let payableNights = nights;
       const applied = [];
-     // 3 Gece Kal 2 Öde: marina, luna, azur ve serenity için
-      const villaId = villa.value;
-      if (
-        (villaId === 'marina' || 
-         villaId === 'luna' || 
-         villaId === 'azur' || 
-         villaId === 'serenity') 
-         && nights >= 3
-      ) {
+    
+      if((villa.value === 'marina' || villa.value === 'luna') && nights >= 3){
         const free = Math.floor(nights / 3);
-        if(free > 0){
-          payableNights = nights - free;
-          applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`);
-        }
+        if(free>0){ payableNights = nights - free; applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`); }
       }
-
       let subtotal = payableNights * price;
-      // Erken rezervasyon %20 (tüm villalar)
       if(isEarlyBooking(gs)){
         const disc = Math.round(subtotal * 0.20);
         subtotal -= disc;
@@ -211,80 +212,39 @@
       toplam.textContent = formatTL(total);
       if(kampanyaEl) kampanyaEl.textContent = applied.length ? `Uygulanan kampanyalar: ${applied.join(' + ')}` : '';
     }
+    
     villa.addEventListener('change', ()=>{
       recalc();
       const cap = currentCapacity();
       const capInfo = document.getElementById('capInfo');
-      if(cap){ capInfo.textContent = `Maks kapasite: ${cap}`; const kisiEl = document.getElementById('kisi'); kisiEl.max = cap; if(Number(kisiEl.value) > cap){ kisiEl.value = cap; } }
-      else { capInfo.textContent = 'Maks kapasite: -'; }
+      if(cap){ 
+        capInfo.textContent = `Maks kapasite: ${cap}`; 
+        const kisiEl = document.getElementById('kisi'); 
+        kisiEl.max = cap; 
+        if(Number(kisiEl.value) > cap){ kisiEl.value = cap; } 
+      } else { capInfo.textContent = 'Maks kapasite: -'; }
     });
     giris.addEventListener('change', recalc);
     cikis.addEventListener('change', recalc);
     recalc();
+    
     form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      if(!form.checkValidity()){ alert('Lütfen gerekli alanları doldurun.'); return; }
-      const cap = currentCapacity();
-      const kisiVal = Number(document.getElementById('kisi').value);
-      if(cap && kisiVal > cap){ alert(`Bu villa için maksimum kapasite ${cap} kişidir.`); return; }
-
-      const selectedOption = villa.options[villa.selectedIndex];
-      const villaName = selectedOption ? selectedOption.text : '';
-      const price = currentPrice();
-      const gs = giris.value ? new Date(giris.value) : null;
-      const cs = cikis.value ? new Date(cikis.value) : null;
-      const nights = (gs && cs && cs > gs) ? nightsBetween(gs, cs) : 0;
-      const tax = 0.08;
-      let payableNights = nights;
-      const applied = [];
-      if (
-        (villa.value === 'marina' || 
-         villa.value === 'luna' || 
-         villa.value === 'azur' || 
-         villa.value === 'serenity') 
-         && nights >= 3
-      ) {
-        const free = Math.floor(nights / 3);
-        if (free > 0) {
-          payableNights = nights - free;
-          applied.push(`3 Gece Kal 2 Öde: ${free} gece ücretsiz`);
-        }
+      // Honeypot kontrolü
+      if(document.getElementById('website').value){
+        e.preventDefault();
+        console.log("Spam bot formu gönderdi.");
+        return;
       }
-
-      let subtotal = payableNights * price;
-      if(isEarlyBooking(gs)){
-        const disc = Math.round(subtotal * 0.20);
-        subtotal -= disc;
-        applied.push('%20 Erken Rezervasyon indirimi');
-      }
-      const total = Math.round(subtotal * (1 + tax));
-
-      const kisi = document.getElementById('kisi').value;
-      const ad = document.getElementById('ad').value.trim();
-      const tel = document.getElementById('tel').value.trim();
-      const eposta = document.getElementById('eposta').value.trim();
-      const not = document.getElementById('not').value.trim();
-
-      const lines = [
-        'Merhaba, Rezervasyon talebim var:',
-        `Villa: ${villaName}`,
-        `Giriş: ${giris.value || '-'}`,
-        `Çıkış: ${cikis.value || '-'}`,
-        `Gece Sayısı: ${nights}`,
-        `Kişi: ${kisi}`,
-        `Gecelik: ${price ? `₺${price.toLocaleString('tr-TR')}` : '-'}`,
-        `Toplam (vergili): ${total ? `₺${total.toLocaleString('tr-TR')}` : '-'}`,
-        ...(applied.length ? [`Kampanyalar: ${applied.join(' + ')}`] : []),
-        `Ad Soyad: ${ad}`,
-        `Telefon: ${tel}`,
-        `E-posta: ${eposta}`,
-        `Not: ${not || '-'}`
-      ];
-      const message = encodeURIComponent(lines.join('\n'));
-      const whatsappUrl = `https://wa.me/905355029257?text=${message}`;
-      window.location.href = whatsappUrl;
+      
+      // Hesaplanan değerleri gizli alanlara koy
+      document.getElementById('gecelikHidden').value = gecelik.textContent;
+      document.getElementById('toplamHidden').value = toplam.textContent;
+      document.getElementById('kampanyaHidden').value = kampanyaEl.textContent;
+    
+      // Normal HTML form gönderimi olacak, fetch kullanılmıyor
     });
-  </script>
+    </script>
+    
 </body>
 </html>
 
